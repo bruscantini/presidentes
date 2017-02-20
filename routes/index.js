@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/signup', (req, res, next) => {
-  res.render('../views/signup');
+  res.render('signup');
 });
 
 router.post("/signup", (req, res, next) => {
@@ -43,7 +43,7 @@ router.post("/signup", (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res.render("../views/signup", { message: "The username already exists" });
+        res.render("signup", { message: "The username already exists" });
       } else {
         res.redirect("/login");
         }
