@@ -6,6 +6,7 @@ const logger        = require('morgan');
 const cookieParser  = require('cookie-parser');
 const bodyParser    = require('body-parser');
 const session       = require("express-session");
+const MongoStore    = require('connect-mongo')(session);
 const bcrypt        = require("bcrypt");
 const passport      = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -41,7 +42,8 @@ app.use(passport.session());
 app.use(session({
   secret: "passport-local-strategy",
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new MongoStore( { mongooseConnection: mongoose.connection })
 }));
 
 passport.serializeUser((user, cb) => {
