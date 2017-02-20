@@ -11,7 +11,6 @@ const bcrypt        = require("bcrypt");
 const passport      = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const authenticator = require('./routes/Authenticator');
-const users         = require('./routes/users');
 const app           = express();
 const flash         = require("connect-flash");
 const expressLayouts = require('express-ejs-layouts');
