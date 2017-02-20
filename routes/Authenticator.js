@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/signup', (req, res, next) => {
-  res.render('signup');
+  res.render('auth/signup');
 });
 
 router.post("/signup", (req, res, next) => {
@@ -23,13 +23,13 @@ router.post("/signup", (req, res, next) => {
   var password = req.body.password;
 
   if (username === "" || password === "") {
-    res.render("../views/signup", { message: "Indicate username and password" });
+    res.render("auth/signup", { message: "Indicate username and password" });
     return;
   }
 
   User.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
-      res.render("../views/signup", { message: "The username already exists" });
+      res.render("auth/signup", { message: "The username already exists" });
       return;
     }
 
@@ -43,7 +43,7 @@ router.post("/signup", (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res.render("signup", { message: "The username already exists" });
+        res.render("auth/signup", { message: "The username already exists" });
       } else {
         res.redirect("/login");
         }
@@ -52,7 +52,7 @@ router.post("/signup", (req, res, next) => {
   });
 
 router.get("/login", (req, res, next) => {
-  res.render("routes/login");
+  res.render("auth/login");
 });
 
 router.post("/login", passport.authenticate("local", {
@@ -62,12 +62,8 @@ router.post("/login", passport.authenticate("local", {
   passReqToCallback: true
 }));
 
-router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render("private", { user: req.user });
-});
-
 router.get("/login", (req, res, next) => {
-  res.render("views/login", { "message": req.flash("error") });
+  res.render("auth/login", { "message": req.flash("error") });
 });
 
 router.post("/login", passport.authenticate("local", {
