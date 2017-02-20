@@ -5,13 +5,15 @@ const User        = require('../models/user');
 const Item        = require('../models/item');
 const Trade       = require('../models/trade');
 const passport    = require("passport");
-const ensureLogin = require("connect-ensure-login");
+const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 const bcrypt      = require('bcrypt');
 const bcryptSalt  = 10;
 
+
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'ITEMS TRADE' });
+router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
+  res.redirect('/home');
 });
 
 router.get('/signup', (req, res, next) => {
@@ -65,13 +67,6 @@ router.post("/login", passport.authenticate("local", {
 router.get("/login", (req, res, next) => {
   res.render("auth/login", { "message": req.flash("error") });
 });
-
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/login",
-  failureFlash: true,
-  passReqToCallback: true
-}));
 
 router.get("/logout", (req, res) => {
   req.logout();

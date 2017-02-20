@@ -11,6 +11,7 @@ const bcrypt        = require("bcrypt");
 const passport      = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const authenticator = require('./routes/Authenticator');
+const mainController = require('./routes/Main');
 const app           = express();
 const flash         = require("connect-flash");
 const expressLayouts = require('express-ejs-layouts');
@@ -27,7 +28,7 @@ app.use(expressLayouts);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use('/', authenticator);
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -72,6 +73,9 @@ passport.use(new LocalStrategy({
       return next(null, user);
     });
   }));
+
+app.use('/', authenticator);
+app.use('/', mainController);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
