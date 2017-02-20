@@ -6,10 +6,52 @@ const Item        = require('../models/item');
 const Trade       = require('../models/trade');
 const passport    = require("passport");
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
+const session       = require("express-session");
+const MongoStore    = require('connect-mongo')(session);
+const LocalStrategy = require("passport-local").Strategy;
+const mongoose = require("mongoose");
+const flash         = require("connect-flash");
 const bcrypt      = require('bcrypt');
 const bcryptSalt  = 10;
 
+router.use(passport.initialize());
+router.use(passport.session());
+router.use(session({
+  secret: "passport-local-strategy",
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore( { mongooseConnection: mongoose.connection })
+}));
 
+passport.serializeUser((user, cb) => {
+  cb(null, user.id);
+});
+
+passport.deserializeUser((id, cb) => {
+  User.findOne({ "_id": id }, (err, user) => {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
+router.use(flash());
+passport.use(new LocalStrategy({
+  passReqToCallback: true
+}, (req, username, password, next) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return next(null, false, { message: "Incorrect username" });
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return next(null, false, { message: "Incorrect password" });
+      }
+
+      return next(null, user);
+    });
+  }));
 
 /* GET home page. */
 router.get('/', ensureLoggedIn('/login'), function(req, res, next) {
@@ -53,10 +95,6 @@ router.post("/signup", (req, res, next) => {
     });
   });
 
-router.get("/login", (req, res, next) => {
-  res.render("auth/login");
-});
-
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/",
   failureRedirect: "/login",
@@ -65,7 +103,7 @@ router.post("/login", passport.authenticate("local", {
 }));
 
 router.get("/login", (req, res, next) => {
-  res.render("auth/login", { "message": req.flash("error") });
+  res.render("auth/login", { message: req.flash("error") });
 });
 
 router.get("/logout", (req, res) => {
