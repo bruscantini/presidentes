@@ -13,4 +13,8 @@ router.get('/home', (req, res, next) => {
   res.render('home', {layout: "layouts/home-layout"});
 });
 
+router.get('/item/:id', (req, res, next) => {
+  res.render('item', {layout: "layouts/home-layout"});
+});
+
 module.exports = router;
