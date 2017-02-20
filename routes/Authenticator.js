@@ -89,14 +89,14 @@ router.post("/signup", (req, res, next) => {
       if (err) {
         res.render("auth/signup", { message: "The username already exists" });
       } else {
-        res.redirect("/login");
+        res.redirect("/home");
         }
       });
     });
   });
 
 router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
+  successRedirect: "/home",
   failureRedirect: "/login",
   failureFlash: true,
   passReqToCallback: true

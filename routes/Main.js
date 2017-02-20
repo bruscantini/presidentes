@@ -7,12 +7,10 @@ const Trade       = require('../models/trade');
 const passport    = require("passport");
 const ensureLogin = require("connect-ensure-login");
 
-
-//router.use(ensureLogin.ensureLoggedIn('/login'));
-
+router.use(ensureLogin.ensureLoggedIn('/login'));
 
 router.get('/home', (req, res, next) => {
-  res.render('home', {layout: 'layouts/home-layout'});
+  res.render('example');
 });
 
 module.exports = router;
