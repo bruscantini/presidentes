@@ -10,8 +10,7 @@ const MongoStore    = require('connect-mongo')(session);
 const bcrypt        = require("bcrypt");
 const passport      = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const index         = require('./routes/index');
-const users         = require('./routes/users');
+const authenticator = require('./routes/Authenticator');
 const app           = express();
 const flash         = require("connect-flash");
 const expressLayouts = require('express-ejs-layouts');
@@ -29,8 +28,8 @@ app.use(expressLayouts);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use('/user', users);
-app.use('/', index);
+// app.use('/user', users);
+app.use('/', authenticator);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
