@@ -10,7 +10,14 @@ const ensureLogin = require("connect-ensure-login");
 //router.use(ensureLogin.ensureLoggedIn('/login'));
 
 router.get('/home', (req, res, next) => {
-  res.render('home', {layout: "layouts/home-layout"});
+  Item.find((err, items) => {
+    if (err){
+      return next(err);
+    }
+    console.log(items);
+    return res.render('home', {layout: "layouts/home-layout",
+                        items });
+  });
 });
 
 router.get('/item/:id', (req, res, next) => {
