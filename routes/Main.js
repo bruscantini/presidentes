@@ -6,6 +6,10 @@ const Item        = require('../models/item');
 const Trade       = require('../models/trade');
 const passport    = require("passport");
 const ensureLogin = require("connect-ensure-login");
+const multer = require('multer');
+const upload = multer({
+    dest: './public/uploads/'
+});
 
 router.use(ensureLogin.ensureLoggedIn('/login'));
 
@@ -25,17 +29,27 @@ router.get('/item/:id', (req, res, next) => {
   Item.findById(itemId, (err, item) => {
     if (err) return next(err);
     return res.render('item', {layout: "layouts/home-layout",
-                                item, user});
+                                item});
   });
 
 });
 
 router.get('/add', (req, res, next) => {
-
+  res.render('add', { layout: "layouts/home-layout"
+});
 });
 
-router.post('/add', (req, res, next) => {
+router.post('/add', upload.single('item-picture'), (req, res, next) => {
+  const name = req.body.name;
+  const description = req.body.description;
+  const filename = req.file.filename;
+  const owner = req.user.id;
 
+  Item.save(
+    {name, description, picPath: `/uploads/${filename}`, owner},
+      (err) => {
+    if (err) return next(err);
+  });
 });
 
 module.exports = router;
