@@ -6,6 +6,10 @@ const Item        = require('../models/item');
 const Trade       = require('../models/trade');
 const passport    = require("passport");
 const ensureLogin = require("connect-ensure-login");
+const multer = require('multer');
+const upload = multer({
+    dest: './public/uploads/'
+});
 
 router.use(ensureLogin.ensureLoggedIn('/login'));
 
@@ -25,7 +29,7 @@ router.get('/item/:id', (req, res, next) => {
   Item.findById(itemId, (err, item) => {
     if (err) return next(err);
     return res.render('item', {layout: "layouts/home-layout",
-                                item, user});
+                                item});
   });
 
 });
@@ -35,8 +39,8 @@ router.get('/add', (req, res, next) => {
 });
 });
 
-router.post('/add', (req, res, next) => {
-
+router.post('/add', upload.single('item-picture'), (req, res, next) => {
+  // use req.file.filename
 });
 
 module.exports = router;
