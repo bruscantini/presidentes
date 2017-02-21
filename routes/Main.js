@@ -44,12 +44,16 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
   const description = req.body.description;
   const filename = req.file.filename;
   const owner = req.user.id;
+  const itemToAdd = new Item({name, description, picPath: `/uploads/${filename}`, owner});
 
-  Item.save(
-    {name, description, picPath: `/uploads/${filename}`, owner},
-      (err) => {
+  itemToAdd.save((err, item) => {
     if (err) return next(err);
+    console.log(item);
+    User.findByIdAndUpdate(owner, {$push: {items: item}}, {new: true}, (err, user) => {
+      console.log('user with item', user);
+    });
   });
+  return res.redirect('/home');
 });
 
 module.exports = router;
