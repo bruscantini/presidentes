@@ -18,7 +18,7 @@ const expressLayouts = require('express-ejs-layouts');
 
 // Mongoose configuration
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/passport-local");
+mongoose.connect("mongodb://localhost/swapper");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
