@@ -6,8 +6,8 @@ const Trade    = require('./trade');
 const userSchema = new Schema({
   name: String,
   surname: String,
-  username: String,
-  password: String,
+  username: {type: String, required: true},
+  password: {type: String, required: true},
   address: String,
   email: {
     type: String,

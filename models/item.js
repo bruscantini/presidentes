@@ -3,10 +3,10 @@ const Schema   = mongoose.Schema;
 const User     = require('./user');
 
 const itemSchema = new Schema({
-  name: String,
+  name: {type: String, required: true},
   category: String,
-  pickpath: String,
-  owner: [{ type: Schema.Types.ObjectId, ref: 'Users'}],
+  picPath: String,
+  owner: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
   description: String,
 });
 
