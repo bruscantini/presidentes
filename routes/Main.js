@@ -40,7 +40,16 @@ router.get('/add', (req, res, next) => {
 });
 
 router.post('/add', upload.single('item-picture'), (req, res, next) => {
-  // use req.file.filename
+  const name = req.body.name;
+  const description = req.body.description;
+  const filename = req.file.filename;
+  const owner = req.user.id;
+
+  Item.save(
+    {name, description, picPath: `/uploads/${filename}`, owner},
+      (err) => {
+    if (err) return next(err);
+  });
 });
 
 module.exports = router;
