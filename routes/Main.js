@@ -31,7 +31,8 @@ router.get('/item/:id', (req, res, next) => {
 });
 
 router.get('/add', (req, res, next) => {
-
+  res.render('add', { layout: "layouts/home-layout"
+});
 });
 
 router.post('/add', (req, res, next) => {
