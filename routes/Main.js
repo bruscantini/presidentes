@@ -25,10 +25,14 @@ router.get('/home', (req, res, next) => {
 
 router.get('/item/:id', (req, res, next) => {
   const itemId = req.params.id;
-  Item.findById(itemId, (err, item) => {
+  const userId = req.params.id;
+  Item
+    .findById(itemId)
+    .populate('owner')
+    .exec ((err, item) => {
     if (err) return next(err);
     return res.render('item', {layout: "layouts/home-layout",
-                                item});
+                                item, owner: item.owner});
   });
 
 });
