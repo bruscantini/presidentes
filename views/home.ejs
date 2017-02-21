@@ -1,25 +1,20 @@
 <% if (items.length > 0){ %>
   <div class="container-fluid">
-  <div class="row">
+    <div class="row">
 
 <%    for (let i = 0; i < items.length; ++i){  %>
 <%      let item = items[i];                   %>
-<%      if (i % 4 === 0 && i !== 0){           %>
-      </div>
-        <div class="row">
-<%      }                                      %>
       <div class="col-xs-6 col-sm-4 col-md-3">
+        <a href="/item/<%=item.id%>">
         <div class="thumbnail">
           <img src="<%=item.picPath%>" alt="...">
           <div class="caption">
             <h3><%=item.name%></h3>
-            <p><%=item.description%></p>
-            <p><a href="/item/<%=item.id%>" class="btn btn-primary" role="button">View</a></p>
           </div>
         </div>
+        </a>
       </div>
 <%    }                                          %>
-
-  </div>
+    </div>
   </div>
 <% }                                              %>
