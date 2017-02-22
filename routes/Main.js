@@ -13,6 +13,10 @@ const upload = multer({
 
 router.use(ensureLogin.ensureLoggedIn('/login'));
 
+router.get('/', (req, res, next) => {
+  res.render('landing', {layout: "layouts/main-layout"});
+});
+
 router.get('/home', (req, res, next) => {
   Item.find((err, items) => {
     if (err){

@@ -66,8 +66,13 @@ passport.use(new LocalStrategy({
 }));
 
 /* GET home page. */
-router.get('/', ensureLogin.ensureLoggedIn('/login'), function(req, res, next) {
+router.get('/', function(req, res, next) {
+  if (req.user) {
     res.redirect('/home');
+  } else {
+    res.render('landing', {layout: "layouts/main-layout"});
+  }
+
 });
 
 router.get('/signup', (req, res, next) => {
