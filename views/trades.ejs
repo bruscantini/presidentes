@@ -1,53 +1,41 @@
 <ul class="list-group">
-  let activeTrades = user.trades.filter(function(trade) {
-    return (trade.status === 'ACTIVE' || 'NEW');
-  });
-  if (user.trades.length < 1){
-    <h2>You have no active trades</h2>
-    <h3>Go find something you like!</h3>
-  } else {
-    trades
-  }
-  <li class="list-group-item">
-    <div class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object" src="..." alt="...">
-        </a>
-      </div>
-    <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>
-
-        </p>
-      </div>
-    </div>
-  </li>
-  <li class="list-group-item">
-    <div class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object" src="..." alt="...">
-        </a>
-      </div>
-      <div class="media-body">
-    <h4 class="media-heading">Media heading</h4>
-    <p>
-
-    </p>
-      </div>
-    </div>
-  </li>
-  <li class="list-group-item">Morbi leo risus</li>
-  <li class="list-group-item">Porta ac consectetur ac</li>
-  <li class="list-group-item">Vestibulum at eros</li>
+  <h2>Active Trades</h2>
+<%  let activeTrades = user.trades.filter(function(trade) {  %>
+<%    return (trade.status === 'ACTIVE' || 'NEW');           %>
+<%  }); %>
+<%  if (activeTrades.length < 1){  %>
+    <h4>You have no active trades</h4>
+    <p>Go find something you like!</p>
+<%  } else {  %>
+<%    activeTrades.forEach((trade) => {  %>
+      <a href="/trade/<%=trade.id%>">
+        <li class="list-group-item">
+          <div class="media">
+            <div class="media-left">
+                <img class="media-object" src="<%=trade.items2[0].picPath%>" alt="...">
+            </div>
+          <div class="media-body">
+<%            if (trade.user1.equals(user.id)){  %>
+              <h4 class="media-heading">Trade with <%=trade.user2.username%></h4>
+<%            } else {  %>
+              <h4 class="media-heading">Trade with <%=trade.user1.username%></h4>
+<%            }  %>
+              <p>
+              </p>
+            </div>
+          </div>
+        </li>
+      </a>
+<%    })  %>
+<%  }  %>
 </ul>
 
 <ul class="list-group">
-  let completedTrades = user.trades.filter(function(trade) {
-    return (trade.status === 'COMPLETE');
-  });
-  if (completedTrades.length === 0){
-    <h2>You have no completed trades</h2>
-  }
+  <h2>Completed Trades</h2>
+<%  let completedTrades = user.trades.filter(function(trade) {  %>
+<%    return (trade.status === 'COMPLETE');  %>
+<%  });  %>
+<%  if (completedTrades.length === 0){  %>
+    <h4>You have no completed trades</h4>
+<%  }  %>
 </ul>

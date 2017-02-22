@@ -60,7 +60,8 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
 
 router.get("/trades", (req, res, next) => {
   const user = req.user;
-  User.findById(user.id).populate('trades').exec(function (err, userObj){
+  user.populate({path: 'trades', populate: {path: 'user1 user2 items2'}}, function (err, userObj){
+    console.log('userObj: ', userObj);
     res.render('trades', {layout: 'layouts/home-layout', user: userObj});
   });
 });
