@@ -1,6 +1,24 @@
 .cover-page {
-  
+  background-size: cover;
+  background-image: url("../images/Stuff_photo.jpg");
+  height: 100vh;
 }
+
+.web-title {
+  font-size: 90px;
+  font-family: 'Tangerine', serif;
+  color: #EC3E36;
+  text-align: center;
+
+}
+
+/*.profile-picture {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+
+}*/
+
 .categories {
   float: right;
   margin-top: 70px;
