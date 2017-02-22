@@ -1,12 +1,44 @@
 <h2>Trade Details</h2>
-
+<% let myThings = [];  %>
+<% let theirThings = [];  %>
+<% if (trade.user1._id.equals(userId)){  %>
+<%  myThings = trade.items1;  %>
+<%  theirThings = trade.items2;  %>
+<% } else {  %>
+<%  myThings = trade.items2;  %>
+<%  theirThings = trade.items1;  %>
+<% }  %>
 <div class="container-fluid">
   <div class="row">
-    
+    <h3>Things I'm offering: </h3>
+  </div>
+  <div class="row">
+<%    myThings.forEach((item) => {  %>
+      <div class="col-xs-4 col-sm-3 col-md-2">
+        <div class="thumbnail">
+          <img src="<%=item.picPath%>" alt="...">
+          <div class="caption">
+            <h3><%=item.name%></h3>
+          </div>
+        </div>
+      </div>
+<%    });  %>
   </div>
   <div class="trade-separator">
   </div>
   <div class="row">
-
+    <h3>Thing's I want: </h3>
+  </div>
+  <div class="row">
+<%    theirThings.forEach((item) => {  %>
+      <div class="col-xs-4 col-sm-3 col-md-2">
+        <div class="thumbnail">
+          <img src="<%=item.picPath%>" alt="...">
+          <div class="caption">
+            <h3><%=item.name%></h3>
+          </div>
+        </div>
+      </div>
+<%    });  %>
   </div>
 </div>
