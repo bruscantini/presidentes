@@ -1,0 +1,15 @@
+@media (min-width:576px) and (max-width: 767px) {
+  .row > div:nth-child(2n+3) {
+    clear: left;
+  }
+}
+@media (min-width:768px) and (max-width: 991px) {
+  .row > div:nth-child(3n+4) {
+    clear: left;
+  }
+}
+@media (min-width: 992px) {
+  .row > div:nth-child(4n+5) {
+    clear: left;
+  }
+}

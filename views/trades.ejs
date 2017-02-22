@@ -1,4 +1,13 @@
 <ul class="list-group">
+  let activeTrades = user.trades.filter(function(trade) {
+    return (trade.status === 'ACTIVE' || 'NEW');
+  });
+  if (user.trades.length < 1){
+    <h2>You have no active trades</h2>
+    <h3>Go find something you like!</h3>
+  } else {
+    trades
+  }
   <li class="list-group-item">
     <div class="media">
       <div class="media-left">
@@ -24,7 +33,7 @@
       <div class="media-body">
     <h4 class="media-heading">Media heading</h4>
     <p>
-      
+
     </p>
       </div>
     </div>
@@ -32,4 +41,13 @@
   <li class="list-group-item">Morbi leo risus</li>
   <li class="list-group-item">Porta ac consectetur ac</li>
   <li class="list-group-item">Vestibulum at eros</li>
+</ul>
+
+<ul class="list-group">
+  let completedTrades = user.trades.filter(function(trade) {
+    return (trade.status === 'COMPLETE');
+  });
+  if (completedTrades.length === 0){
+    <h2>You have no completed trades</h2>
+  }
 </ul>

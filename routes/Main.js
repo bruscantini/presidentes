@@ -59,4 +59,69 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
   return res.redirect('/home');
 });
 
+router.get("/trades", (req, res, next) => {
+  const user = req.user;
+  User.findById(user.id).populate('trades').exec(function (err, userObj){
+    res.render('trades', {layout: 'layouts/home-layout', user: userObj});
+  });
+});
+
+router.get("/addToTrade/:itemId", (req, res, next) => {
+  const currentUser = req.user;
+  // for refactoring, we can use the currentUser.save instead of searching db
+
+  // get item object
+  Item.findById(req.params.itemId).exec((err, item) => {
+    if (err) return next(err);
+    //console.log('the item object, ', item);
+
+    //get owner object of item
+    User.findById(item.owner).populate('trades').exec((err, owner) => {
+      if (err) return next(err);
+      if (currentUser.id.equals(owner.id)) return res.redirect('/home');
+      //console.log('the owner: ', owner);
+      //console.log("the owner's trades: ", owner.trades);
+      // search owner's trades to see if one exists between owner and currentUser.
+      let oldTrade = owner.trades.find(function (trade) {
+        return (trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id));
+      });
+      if (oldTrade){
+        // owner has a trade with currentUser already!
+        console.log('owner already has a trade with current User!');
+        if (oldTrade.user1.equals(owner.id)){
+          // owner is user1 in the trade.
+          console.log('owner is user1 in the trade');
+          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items1: item.id}}, {new: true}, (err, updatedTrade) =>{
+            if (err) return next(err);
+            console.log('updated trade: ', updatedTrade);
+          });
+        } else {
+          // owner is user2 in the trade.
+          console.log('owner is user2 in the trade');
+          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items2: item.id}}, {new: true}, (err, updatedTrade) =>{
+            if (err) return next(err);
+            console.log('updated trade: ', updatedTrade);
+          });
+        }
+      } else {
+        // make a new trade between currentUser and owner.
+        console.log('making a new trade between these users.');
+        const newTrade = new Trade({status: 'NEW', user1: currentUser.id, user2: owner.id, items2: [item.id]});
+        newTrade.save((err, tradeDoc) => {
+          if (err) return next(err);
+          //console.log('trade added to db', tradeDoc);
+          User.findByIdAndUpdate(currentUser.id, {$push: {trades: tradeDoc.id}}, {new: true}, (err, user1Doc) => {
+            console.log('updated user1', user1Doc);
+          });
+          User.findByIdAndUpdate(owner.id, {$push: {trades: tradeDoc.id}}, {new: true}, (err, user2Doc) => {
+            console.log('item.owner.id', owner.id);
+            console.log('updated user2', user2Doc);
+          });
+        });
+      }
+      res.redirect('/trades');
+    });
+  });
+});
+
 module.exports = router;
