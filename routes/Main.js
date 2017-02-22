@@ -25,7 +25,6 @@ router.get('/home', (req, res, next) => {
 
 router.get('/item/:id', (req, res, next) => {
   const itemId = req.params.id;
-  const userId = req.params.id;
   Item
     .findById(itemId)
     .populate('owner')
@@ -39,7 +38,7 @@ router.get('/item/:id', (req, res, next) => {
 
 router.get('/add', (req, res, next) => {
   res.render('add', { layout: "layouts/home-layout"
-});
+  });
 });
 
 router.post('/add', upload.single('item-picture'), (req, res, next) => {
@@ -78,7 +77,10 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
     //get owner object of item
     User.findById(item.owner).populate('trades').exec((err, owner) => {
       if (err) return next(err);
-      if (currentUser.id.equals(owner.id)) return res.redirect('/home');
+      if (currentUser.id === owner.id){
+        console.log("current user is owner of Item. No Trade!");
+        return res.redirect('/home');
+      }
       //console.log('the owner: ', owner);
       //console.log("the owner's trades: ", owner.trades);
       // search owner's trades to see if one exists between owner and currentUser.
@@ -121,6 +123,23 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
       }
       res.redirect('/trades');
     });
+  });
+});
+
+router.get('/profile/:id', (req, res, next) => {
+  const userId = req.params.id;
+  User.findById(userId,(err, user) => {
+    if (err) return next(err);
+    return res.render('profile', {layout: "layouts/home-layout",
+                              items: user.items, user});
+  });
+});
+
+router.get('/profile', (req, res, next) => {
+  const user = req.user;
+  User.findById(user, (err, user) => {
+    if (err) return next(err);
+    return res.render('profile', {layout: "layouts/home-layout", items: user.items, user});
   });
 });
 
