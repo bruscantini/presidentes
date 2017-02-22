@@ -60,20 +60,18 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
 
 router.get('/profile/:id', (req, res, next) => {
   const userId = req.params.id;
-  User.findById(userId)
-  .populate('item')
-  .exec ((err, user) => {
-  if (err) return next(err);
-  return res.render('profile', {layout: "layouts/home-layout",
-                              item: user.item, user});
+  User.findById(userId,(err, user) => {
+    if (err) return next(err);
+    return res.render('profile', {layout: "layouts/home-layout",
+                              items: user.items, user});
   });
 });
 
 router.get('/profile', (req, res, next) => {
   const user = req.user;
-  User.findOne((user), (err, user) => {
+  User.findById(user, (err, user) => {
     if (err) return next(err);
-    return res.render('profile', {layout: "layouts/home-layout", user});
+    return res.render('profile', {layout: "layouts/home-layout", items: user.items, user});
   });
 });
 
