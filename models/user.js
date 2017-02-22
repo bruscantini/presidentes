@@ -12,8 +12,8 @@ const userSchema = new Schema({
   email: {
     type: String,
     lowercase: true },
-  item: [{ type: Schema.Types.ObjectId, ref: 'Items'}],
-  trade: [{ type: Schema.Types.ObjectId, ref: 'Trades'}]
+  items: [{ type: Schema.Types.ObjectId, ref: 'Items'}],
+  trades: [{ type: Schema.Types.ObjectId, ref: 'Trades'}]
 });
 
 const User = mongoose.model('Users', userSchema);

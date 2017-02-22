@@ -31,3 +31,6 @@ npm-debug.log
 
 # mac finder ds_store
 *.DS_Store
+
+# uploaded pictures
+public/uploads
