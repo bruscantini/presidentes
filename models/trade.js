@@ -7,8 +7,8 @@ const tradeSchema = new Schema({
   status: {type: String, enum: ['NEW', 'ACTIVE', 'COMPLETE'], required: true},
   user1: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
   user2: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
-  items1: [{ type: Schema.Types.ObjectId, ref: 'Items', unique: true}],
-  items2: [{ type: Schema.Types.ObjectId, ref: 'Items', required: true, unique: true}]
+  items1: [{ type: Schema.Types.ObjectId, ref: 'Items'}],
+  items2: [{ type: Schema.Types.ObjectId, ref: 'Items', required: true}]
 });
 
 const Trade = mongoose.model('Trades', tradeSchema);
