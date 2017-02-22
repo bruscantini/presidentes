@@ -25,7 +25,6 @@ router.get('/home', (req, res, next) => {
 
 router.get('/item/:id', (req, res, next) => {
   const itemId = req.params.id;
-  const userId = req.params.id;
   Item
     .findById(itemId)
     .populate('owner')
@@ -39,7 +38,7 @@ router.get('/item/:id', (req, res, next) => {
 
 router.get('/add', (req, res, next) => {
   res.render('add', { layout: "layouts/home-layout"
-});
+  });
 });
 
 router.post('/add', upload.single('item-picture'), (req, res, next) => {
@@ -52,6 +51,25 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
     {name, description, picPath: `/uploads/${filename}`, owner},
       (err) => {
     if (err) return next(err);
+  });
+});
+
+router.get('/profile/:id', (req, res, next) => {
+  const userId = req.params.id;
+  User.findById(userId)
+  .populate('item')
+  .exec ((err, user) => {
+  if (err) return next(err);
+  return res.render('profile', {layout: "layouts/home-layout",
+                              item: user.item, user});
+  });
+});
+
+router.get('/profile', (req, res, next) => {
+  const user = req.user;
+  User.findOne((user), (err, user) => {
+    if (err) return next(err);
+    return res.render('profile', {layout: "layouts/home-layout", user});
   });
 });
 
