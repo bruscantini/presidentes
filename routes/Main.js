@@ -157,7 +157,11 @@ router.get('/complete/:tradeId', (req, res, next) => {
       res.redirect('/trades');
     });
     let itemsToRemove = trade.items1.concat(trade.items2);
-    console.log('items to Remove ', itemsToRemove);
+    itemsToRemove.forEach((itemId) => {
+      Item.findByIdAndUpdate(itemId, {available: false}, (err, itemDoc) => {
+
+      });
+    });
   });
 });
 
@@ -184,7 +188,7 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
         return ((trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id)) &&
                    trade.status !== 'COMPLETE');
       });
-      if (oldTrade && oldTrade.status){
+      if (oldTrade){
         // owner has a trade with currentUser already!
         console.log('owner already has a trade with current User!');
         if (oldTrade.user1.equals(owner.id)){
@@ -202,6 +206,7 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
             console.log('updated trade: ', updatedTrade);
           });
         }
+        return res.redirect(`/trade/${oldTrade._id}`);
       } else {
         // make a new trade between currentUser and owner.
         console.log('making a new trade between these users.');
@@ -216,9 +221,9 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
             console.log('item.owner.id', owner.id);
             console.log('updated user2', user2Doc);
           });
+          return res.redirect(`/trade/${tradeDoc._id}`);
         });
       }
-      res.redirect('/trades');
     });
   });
 });
