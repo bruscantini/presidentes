@@ -12,12 +12,31 @@
 
 }
 
-/*.profile-picture {
-  width: 100px;
-  height: 100px;
+.profile-picture {
+  width: 200px;
+  height: 450px;
   background-size: cover;
+  position: relative;
+  margin: auto;
 
-}*/
+}
+
+.profile-picture>img {
+  width: 200px;
+  height: 250px;
+  border-radius: 10%;
+}
+
+.caption {
+  text-align: center;
+
+}
+
+.username-profile {
+  font-size: 24px;
+  font-family: sans-serif;
+  text-align: center;
+}
 
 .categories {
   float: right;
