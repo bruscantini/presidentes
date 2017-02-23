@@ -11,9 +11,7 @@
       <a href="/trade/<%=trade.id%>">
         <li class="list-group-item">
           <div class="media">
-            <div class="media-left">
-                <img class="media-object" src="<%=trade.items2[0].picPath%>" alt="...">
-            </div>
+
           <div class="media-body">
 <%            if (trade.user1.equals(user.id)){  %>
               <h4 class="media-heading">View trade with <%=trade.user2.username%></h4>
