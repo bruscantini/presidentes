@@ -8,6 +8,7 @@ const itemSchema = new Schema({
   picPath: String,
   owner: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
   description: String,
+  available: {type: Boolean, default: true}
 });
 
 const Item = mongoose.model('Items', itemSchema);

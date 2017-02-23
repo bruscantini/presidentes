@@ -156,6 +156,8 @@ router.get('/complete/:tradeId', (req, res, next) => {
     trade.save((err, savedTrade) => {
       res.redirect('/trades');
     });
+    let itemsToRemove = trade.items1.concat(trade.items2);
+    console.log('items to Remove ', itemsToRemove);
   });
 });
 
@@ -179,9 +181,10 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
       //console.log("the owner's trades: ", owner.trades);
       // search owner's trades to see if one exists between owner and currentUser.
       let oldTrade = owner.trades.find(function (trade) {
-        return (trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id));
+        return ((trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id)) &&
+                   trade.status !== 'COMPLETE');
       });
-      if (oldTrade && oldTrade.status !== 'COMPLETE'){
+      if (oldTrade && oldTrade.status){
         // owner has a trade with currentUser already!
         console.log('owner already has a trade with current User!');
         if (oldTrade.user1.equals(owner.id)){
