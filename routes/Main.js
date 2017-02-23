@@ -27,6 +27,35 @@ router.get('/home', (req, res, next) => {
   });
 });
 
+router.get('/profile-form', (req, res, next) => {
+  User.find((err, user) => {
+  res.render('profile-form', {layout: "layouts/home-layout",
+                      user});
+  });
+});
+
+router.post('/profile-form', upload.single('file'), (req, res, next) => {
+  const {name, surname, address, email, phone} = req.body;
+  const currentUser = req.user;
+
+  if (name !== "") currentUser.name = name;
+  if (surname !== "") currentUser.surname = surname;
+  if (address !== "") currentUser.address = address;
+  if (email !== "") currentUser.email = email;
+  if (phone !== "") currentUser.phone = phone;
+  currentUser.picPath = `/uploads/${req.file.filename}`;
+
+
+  currentUser.save((err) => {
+    if (err) {
+      res.redirect('/profile-form');
+    }
+    else {
+      res.redirect('/profile');
+    }
+  });
+});
+
 router.get('/item/:id', (req, res, next) => {
   const itemId = req.params.id;
   Item
@@ -59,7 +88,7 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
       console.log('user with item', user);
     });
   });
-  return res.redirect('/home');
+  return res.redirect('/profile');
 });
 
 router.get("/trades", (req, res, next) => {
@@ -193,7 +222,7 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
 
 router.get('/profile/:id', (req, res, next) => {
   const userId = req.params.id;
-  User.findById(userId,(err, user) => {
+  User.findById(userId).populate('items').exec((err, user) => {
     if (err) return next(err);
     return res.render('profile', {layout: "layouts/home-layout",
                               items: user.items, user});
@@ -201,9 +230,10 @@ router.get('/profile/:id', (req, res, next) => {
 });
 
 router.get('/profile', (req, res, next) => {
-  const user = req.user;
-  User.findById(user, (err, user) => {
+  const userId = req.user.id;
+  User.findById(userId).populate('items').exec((err, user) => {
     if (err) return next(err);
+    console.log("Esto es lo que buscamos",  user.items);
     return res.render('profile', {layout: "layouts/home-layout", items: user.items, user});
   });
 });

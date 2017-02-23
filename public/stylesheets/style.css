@@ -1,7 +1,7 @@
 .cover-page {
   background-size: cover;
   background-image: url("../images/Stuff_photo.jpg");
-  height: 100vh;
+  height: calc(100vh - 66px);
 }
 
 .web-title {
@@ -12,12 +12,43 @@
 
 }
 
-/*.profile-picture {
-  width: 100px;
-  height: 100px;
+.profile-picture {
+  width: 200px;
+  height: 300px;
   background-size: cover;
+  position: relative;
+  margin: auto;
 
-}*/
+}
+
+.profile-picture>img {
+  width: 200px;
+  height: 250px;
+  border-radius: 10%;
+}
+
+.caption {
+  text-align: center;
+}
+
+.caption>h6 {
+  font-size: 16px;
+}
+
+.username-profile {
+  font-size: 24px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.imagen {
+  text-align: center;
+}
+
+.owner-item {
+  text-align: center;
+  font-size: 28px;
+}
 
 .categories {
   float: right;

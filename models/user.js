@@ -12,6 +12,8 @@ const userSchema = new Schema({
   email: {
     type: String,
     lowercase: true },
+  phone: Number,
+  picPath: String,
   items: [{ type: Schema.Types.ObjectId, ref: 'Items'}],
   trades: [{ type: Schema.Types.ObjectId, ref: 'Trades'}]
 });
