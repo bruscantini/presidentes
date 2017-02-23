@@ -27,6 +27,33 @@ router.get('/home', (req, res, next) => {
   });
 });
 
+router.get('/profile-form', (req, res, next) => {
+  User.find((err, user) => {
+  res.render('profile-form', {layout: "layouts/home-layout",
+                      user});
+  });
+});
+
+router.post('/profile-form', (req, res, next) => {
+  const {name, surname, address, email, phone} = req.body;
+  const currentUser = req.user;
+
+  if (name !== "") currentUser.name = name;
+  if (surname !== "") currentUser.surname = surname;
+  if (address !== "") currentUser.address = address;
+  if (email !== "") currentUser.email = email;
+  if (phone !== null) currentUser.phone = phone;
+
+  currentUser.save((err) => {
+    if (err) {
+      res.redirect('/profile-form');
+    }
+    else {
+      res.redirect('/profile');
+    }
+  });
+});
+
 router.get('/item/:id', (req, res, next) => {
   const itemId = req.params.id;
   Item
