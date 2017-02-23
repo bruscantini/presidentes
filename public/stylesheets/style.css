@@ -41,6 +41,11 @@
   text-align: center;
 }
 
+.item {
+  width: 100px;
+  height: 100px;
+}
+
 .imagen {
   text-align: center;
 }
@@ -50,14 +55,28 @@
   font-size: 28px;
 }
 
+.media-heading {
+  position: absolute;
+  top: 100px;
+}
+
+.media-body {
+  position: relative;
+}
+
+.media-left {
+  width: 300px;
+  height: 150px;
+}
+
+.media-object {
+  border: solid 2px black;
+}
+
 .categories {
   float: right;
   margin-top: 70px;
   padding-right: 100px;
-}
-
-.item {
-
 }
 
 .top-margin {
@@ -77,5 +96,5 @@
 }
 
 #trade-details-button-row {
-  
+
 }
