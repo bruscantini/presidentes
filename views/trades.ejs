@@ -1,7 +1,7 @@
 <ul class="list-group">
   <h2>Active Trades</h2>
 <%  let activeTrades = user.trades.filter(function(trade) {  %>
-<%    return (trade.status === 'ACTIVE' || 'NEW');           %>
+<%    return (trade.status === 'ACTIVE' || trade.status === 'NEW');           %>
 <%  }); %>
 <%  if (activeTrades.length < 1){  %>
     <h4>You have no active trades</h4>
@@ -37,5 +37,55 @@
 <%  });  %>
 <%  if (completedTrades.length === 0){  %>
     <h4>You have no completed trades</h4>
+<%  } else { %>
+<%      completedTrades.forEach((trade)=> {      %>
+        <li class="list-group-item">
+          <div class="row">
+<%            if (trade.user1.equals(user.id)){  %>
+              <div class="col-xs-4">
+                <h4 class="media-heading">Trade with <%=trade.user2.username%></h4>
+              </div>
+              <div class="col-xs-4">
+                <h4 class="media-heading">What I received</h4>
+                <ul class="list-group">
+        <%        trade.items2.forEach((item) => {        %>
+                    <li><%=item.name%></li>
+        <%        })                            %>
+                </ul>
+              </div>
+              <div class="col-xs-4">
+                <h4 class="media-heading">What I gave</h4>
+                <ul class="list-group">
+        <%        trade.items1.forEach((item) => {        %>
+                    <li><%=item.name%></li>
+        <%        })                            %>
+                </ul>
+              </div>
+
+  <%          } else {  %>
+    <div class="col-xs-4">
+      <h4 class="media-heading">Trade with <%=trade.user1.username%></h4>
+    </div>
+    <div class="col-xs-4">
+      <h4 class="media-heading">What I received</h4>
+      <ul class="list-group">
+<%        trade.items1.forEach((item) => {        %>
+          <li><%=item.name%></li>
+<%        })                            %>
+      </ul>
+    </div>
+    <div class="col-xs-4">
+      <h4 class="media-heading">What I gave</h4>
+      <ul class="list-group">
+<%        trade.items2.forEach((item) => {        %>
+          <li><%=item.name%></li>
+<%        })                            %>
+      </ul>
+    </div>
+<%            }  %>
+
+          </div>
+        </li>
+<%      });      %>
 <%  }  %>
 </ul>
