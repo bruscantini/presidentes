@@ -2,17 +2,19 @@
 <% let myThings = [];  %>
 <% let theirThings = [];  %>
 <% let theirId = trade.user1._id;  %>
+<% let theirName = trade.user1.name %>
 <% if (trade.user1._id.equals(userId)){  %>
 <%  myThings = trade.items1;  %>
 <%  theirThings = trade.items2;  %>
 <%  theirId = trade.user2._id   %>
+<%  theirName = trade.user2.name %>
 <% } else {  %>
 <%  myThings = trade.items2;  %>
 <%  theirThings = trade.items1;  %>
 <% }  %>
 <div class="container-fluid">
   <div class="row">
-    <h3>Things I'm offering: </h3>
+    <h3>Things <%=theirName%> wants: </h3>
   </div>
   <div class="row">
 <%    myThings.forEach((item) => {  %>
