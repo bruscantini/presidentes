@@ -8,7 +8,9 @@ const tradeSchema = new Schema({
   user1: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
   user2: { type: Schema.Types.ObjectId, ref: 'Users', required: true},
   items1: [{ type: Schema.Types.ObjectId, ref: 'Items'}],
-  items2: [{ type: Schema.Types.ObjectId, ref: 'Items', required: true}]
+  items2: [{ type: Schema.Types.ObjectId, ref: 'Items', required: true}],
+  user1Accepted: {type: Boolean, default: true},
+  user2Accepted: {type: Boolean, default: false}
 });
 
 const Trade = mongoose.model('Trades', tradeSchema);

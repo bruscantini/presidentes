@@ -113,6 +113,34 @@ router.get("/trade/:id", (req, res, next) => {
   });
 });
 
+router.delete('/removeFromTrade', (req, res, next) => {
+  const {tradeId, itemId} = req.body;
+  // remove item from trade and set accepted to false for both users.
+  Trade.findByIdAndUpdate(tradeId, {$pull: {items1: itemId, items2: itemId}, user1Accepted: false, user2Accepted: false}, {new: true}, (err, trade) => {
+    if (err){
+      console.log(err);
+      return next(err);
+    }
+    res.send(trade);
+    if (trade.items1.length === 0 && trade.items2.length === 0){
+      Trade.findByIdAndRemove(tradeId, (err, removedTrade) => {
+        if (err) return next(err);
+
+      });
+    }
+  });
+});
+
+router.get('/negotiate/:tradeId', (req, res, next) => {
+  const tradeId = req.params.tradeId;
+  Trade.findById(tradeId);
+});
+
+router.get('/complete/:tradeId', (req, res, next) => {
+  const tradeId = req.params.tradeId;
+  Trade.findById(tradeId);
+});
+
 router.get("/addToTrade/:itemId", (req, res, next) => {
   const currentUser = req.user;
   // for refactoring, we can use the currentUser.save instead of searching db
@@ -141,14 +169,14 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
         if (oldTrade.user1.equals(owner.id)){
           // owner is user1 in the trade.
           console.log('owner is user1 in the trade');
-          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items1: item.id}}, {new: true}, (err, updatedTrade) =>{
+          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items1: item.id}, status: 'ACTIVE', user1Accepted: false}, {new: true}, (err, updatedTrade) =>{
             if (err) return next(err);
             console.log('updated trade: ', updatedTrade);
           });
         } else {
           // owner is user2 in the trade.
           console.log('owner is user2 in the trade');
-          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items2: item.id}}, {new: true}, (err, updatedTrade) =>{
+          Trade.findByIdAndUpdate(oldTrade.id, {$addToSet: {items2: item.id}, status: 'ACTIVE', user2Accepted: false}, {new: true}, (err, updatedTrade) =>{
             if (err) return next(err);
             console.log('updated trade: ', updatedTrade);
           });
