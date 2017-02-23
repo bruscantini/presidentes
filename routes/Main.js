@@ -64,8 +64,23 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
 
 router.get("/trades", (req, res, next) => {
   const user = req.user;
-  User.findById(user.id).populate('trades').exec(function (err, userObj){
+  user.populate({path: 'trades', populate: {path: 'user1 user2 items2'}}, function (err, userObj){
     res.render('trades', {layout: 'layouts/home-layout', user: userObj});
+  });
+});
+
+// Security issue: Anybody can access this page if they're logged in,
+// even if they aren't part of the trade.
+router.get("/trade/:id", (req, res, next) => {
+  const tradeId = req.params.id;
+  const userId = req.user.id;
+  Trade.findById(tradeId).populate('user1 user2 items1 items2').exec((err, trade) => {
+    console.log('trade', trade);
+    if(!trade.user1._id.equals(userId) && !trade.user2._id.equals(userId)){
+      console.log("Hey, you shouldn't be here. You're not part of this trade!");
+      res.redirect('/home');
+    }
+    res.render('trade-details', {layout: 'layouts/home-layout', trade, userId});
   });
 });
 
