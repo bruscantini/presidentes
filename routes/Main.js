@@ -93,7 +93,7 @@ router.post('/add', upload.single('item-picture'), (req, res, next) => {
 
 router.get("/trades", (req, res, next) => {
   const user = req.user;
-  user.populate({path: 'trades', populate: {path: 'user1 user2 items2'}}, function (err, userObj){
+  user.populate({path: 'trades', populate: {path: 'user1 user2 items1 items2'}}, function (err, userObj){
     res.render('trades', {layout: 'layouts/home-layout', user: userObj});
   });
 });
@@ -181,7 +181,7 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
       let oldTrade = owner.trades.find(function (trade) {
         return (trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id));
       });
-      if (oldTrade){
+      if (oldTrade && oldTrade.status !== 'COMPLETE'){
         // owner has a trade with currentUser already!
         console.log('owner already has a trade with current User!');
         if (oldTrade.user1.equals(owner.id)){
