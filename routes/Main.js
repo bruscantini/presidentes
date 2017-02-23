@@ -133,12 +133,30 @@ router.delete('/removeFromTrade', (req, res, next) => {
 
 router.get('/negotiate/:tradeId', (req, res, next) => {
   const tradeId = req.params.tradeId;
-  Trade.findById(tradeId);
+  const currentUser = req.user;
+  Trade.findById(tradeId, (err, trade) => {
+    if (err) return next(err);
+    if (currentUser._id.equals(trade.user1)){
+      trade.user1Accepted = true;
+    } else {
+      trade.user2Accepted = true;
+    }
+    trade.save((err, savedTrade) => {
+
+    });
+    res.redirect('/trades');
+  });
 });
 
 router.get('/complete/:tradeId', (req, res, next) => {
   const tradeId = req.params.tradeId;
-  Trade.findById(tradeId);
+  Trade.findById(tradeId, (err, trade) => {
+    if (err) return next(err);
+    trade.status = 'COMPLETE';
+    trade.save((err, savedTrade) => {
+      res.redirect('/trades');
+    });
+  });
 });
 
 router.get("/addToTrade/:itemId", (req, res, next) => {
