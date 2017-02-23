@@ -1,22 +1,20 @@
 <div class="col-xs-6 col-md-4">
   <h4 class="username-profile"><%=user.username%></h4>
    <div class="profile-picture">
-     <img src="images/Scarlett_Johansson.jpg" alt="...">
+     <img src="<%=user.picPath%>" alt="...">
    </div>
    <div class="caption">
      <h6><%=user.name%></h6>
      <h6><%=user.surname%></h6>
      <h6><%=user.email%></h6>
      <h6><%=user.address%></h6>
-     <button type="button" name="button"><a href="/profile-form" class="update-profile" role="button">Update profile</a></button>
-     <button type="button" name="button"><a href="/add-photo" class="add-item-profile" role="button">Add photo</a></button>
    </div>
  </div>
 
 <div class="col-md-8 col-md-4">
   <h2>Create profile</h2>
 
-  <form action="/profile-form" method="POST" id="form-profile">
+  <form action="/profile-form" method="POST" id="form-profile"  enctype="multipart/form-data">
     <label for="name">Name</label>
     <input type="text" name="name" placeholder="Name" value="<%=user.name%>">
     <br><br>
@@ -31,9 +29,10 @@
     <br><br>
     <label for="phone">Phone</label>
     <input type="text" name="phone" placeholder="000000000" value="<%=user.phone%>">
-    <br><br>
-
-    <button>Add photo</button>
-      <button>Create profile</button>
+    <br>
+    <br>
+      <label for="file">Upload image: </label>
+      <input type="file" name="file"><br><br>
+    <input type="submit">
   </form>
 </div>

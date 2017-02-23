@@ -1,7 +1,7 @@
 .cover-page {
   background-size: cover;
   background-image: url("../images/Stuff_photo.jpg");
-  height: 100vh;
+  height: calc(100vh - 66px);
 }
 
 .web-title {
@@ -39,6 +39,15 @@
   font-size: 24px;
   font-family: sans-serif;
   text-align: center;
+}
+
+.imagen {
+  text-align: center;
+}
+
+.owner-item {
+  text-align: center;
+  font-size: 28px;
 }
 
 .categories {
