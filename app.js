@@ -15,10 +15,11 @@ const main          = require('./routes/Main');
 const app           = express();
 const flash         = require("connect-flash");
 const expressLayouts = require('express-ejs-layouts');
+require("dotenv").config();
 
 // Mongoose configuration
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/swapper");
+mongoose.connect(process.env.MONGODB_URI);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
