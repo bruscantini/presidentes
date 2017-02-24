@@ -4,7 +4,7 @@
 
 <%    for (let i = 0; i < items.length; ++i){  %>
 <%      let item = items[i];                   %>
-<%      if (item.available){                  %>
+<%      if (item.available && !user._id.equals(item.owner)){                  %>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <a href="/item/<%=item.id%>">
         <div class="thumbnail">
