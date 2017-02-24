@@ -34,3 +34,6 @@ npm-debug.log
 
 # uploaded pictures
 public/uploads
+
+# dotenv
+.env
