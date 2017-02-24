@@ -11,7 +11,9 @@
      <h6><%=user.phone%></h6>
      <br>
      <br>
-     <button type="button" name="button"><a href="/profile-form" class="update-profile" role="button">Update profile</a></button>
+    <% if (typeof(currentUser) !== "undefined") { %>
+     <a href="/profile-form" class="update-profile" role="button"><button type="button" name="button">Update profile</button></a>
+    <% }                                           %>
    </div>
  </div>
 

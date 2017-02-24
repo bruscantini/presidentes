@@ -44,7 +44,7 @@ router.post('/profile-form', upload.single('file'), (req, res, next) => {
   if (address !== "") currentUser.address = address;
   if (email !== "") currentUser.email = email;
   if (phone !== "") currentUser.phone = phone;
-  currentUser.picPath = `/uploads/${req.file.filename}`;
+  if (req.file) currentUser.picPath = `/uploads/${req.file.filename}`;
 
 
   currentUser.save((err) => {
@@ -255,10 +255,11 @@ router.get('/profile/:id', (req, res, next) => {
 
 router.get('/profile', (req, res, next) => {
   const userId = req.user.id;
+  const currentUser = req.user;
   User.findById(userId).populate('items').exec((err, user) => {
     if (err) return next(err);
     console.log("Esto es lo que buscamos",  user.items);
-    return res.render('profile', {layout: "layouts/home-layout", items: user.items, user});
+    return res.render('profile', {layout: "layouts/home-layout", items: user.items, user, currentUser});
   });
 });
 
