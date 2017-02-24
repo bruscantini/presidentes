@@ -4,6 +4,7 @@
 
 <%    for (let i = 0; i < items.length; ++i){  %>
 <%      let item = items[i];                   %>
+<%      if (item.available){                  %>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <a href="/item/<%=item.id%>">
         <div class="thumbnail">
@@ -14,6 +15,7 @@
         </div>
         </a>
       </div>
+<%      }                                      %>
 <%    }                                          %>
     </div>
   </div>

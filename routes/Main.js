@@ -121,13 +121,20 @@ router.delete('/removeFromTrade', (req, res, next) => {
       console.log(err);
       return next(err);
     }
-    res.send(trade);
+    //make item available again
+    Item.findByIdAndUpdate(itemId, {available: true}, (err, updatedItem) =>{
+      if (err){
+        console.log(err);
+        return next(err);
+      }
+    });
     if (trade.items1.length === 0 && trade.items2.length === 0){
       Trade.findByIdAndRemove(tradeId, (err, removedTrade) => {
         if (err) return next(err);
 
       });
     }
+    res.send(trade);
   });
 });
 
@@ -156,6 +163,12 @@ router.get('/complete/:tradeId', (req, res, next) => {
     trade.save((err, savedTrade) => {
       res.redirect('/trades');
     });
+    let itemsToRemove = trade.items1.concat(trade.items2);
+    itemsToRemove.forEach((itemId) => {
+      Item.findByIdAndUpdate(itemId, {available: false}, (err, itemDoc) => {
+
+      });
+    });
   });
 });
 
@@ -175,13 +188,22 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
         console.log("current user is owner of Item. No Trade!");
         return res.redirect('/home');
       }
-      //console.log('the owner: ', owner);
-      //console.log("the owner's trades: ", owner.trades);
+
+      //make item unavailable
+      item.available = false;
+      item.save((err) =>{
+        if (err){
+          console.log(err);
+          return next(err);
+        }
+      });
+
       // search owner's trades to see if one exists between owner and currentUser.
       let oldTrade = owner.trades.find(function (trade) {
-        return (trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id));
+        return ((trade.user1.equals(currentUser.id) || trade.user2.equals(currentUser.id)) &&
+                   trade.status !== 'COMPLETE');
       });
-      if (oldTrade && oldTrade.status !== 'COMPLETE'){
+      if (oldTrade){
         // owner has a trade with currentUser already!
         console.log('owner already has a trade with current User!');
         if (oldTrade.user1.equals(owner.id)){
@@ -199,6 +221,7 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
             console.log('updated trade: ', updatedTrade);
           });
         }
+        return res.redirect(`/trade/${oldTrade._id}`);
       } else {
         // make a new trade between currentUser and owner.
         console.log('making a new trade between these users.');
@@ -213,9 +236,9 @@ router.get("/addToTrade/:itemId", (req, res, next) => {
             console.log('item.owner.id', owner.id);
             console.log('updated user2', user2Doc);
           });
+          return res.redirect(`/trade/${tradeDoc._id}`);
         });
       }
-      res.redirect('/trades');
     });
   });
 });
