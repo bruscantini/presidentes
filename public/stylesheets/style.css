@@ -23,7 +23,7 @@
 
 .profile-picture>img {
   width: 200px;
-  height: 250px;
+  height: 200px;
   border-radius: 10%;
 }
 
@@ -31,7 +31,7 @@
   text-align: center;
 }
 
-.caption>h6 {
+.details-profile {
   font-size: 16px;
 }
 
@@ -55,14 +55,14 @@
   font-size: 28px;
 }
 
-.media-heading {
+/*.media-heading {
   position: absolute;
   top: 100px;
-}
+}*/
 
-.media-body {
+/*.media-body {
   position: relative;
-}
+}*/
 
 .media-left {
   width: 300px;
