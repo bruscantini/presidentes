@@ -9,15 +9,18 @@ mongoose.connect("mongodb://localhost/swapper");
 const users = [
   {
     username: 'bob',
-    password: bcrypt.hashSync('asdf', saltRounds)
+    password: bcrypt.hashSync('asdf', saltRounds),
+    picPath: "http://www.bobmarley.com/wp-content/uploads/2013/10/bob_marley2.jpg"
   },
   {
     username: 'tim',
-    password: bcrypt.hashSync('qwer', saltRounds)
+    password: bcrypt.hashSync('qwer', saltRounds),
+    picPath: "http://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/215.png&w=350&h=254"
   },
   {
     username: 'alice',
-    password: bcrypt.hashSync('zxcv', saltRounds)
+    password: bcrypt.hashSync('zxcv', saltRounds),
+    picPath: 'https://i.ytimg.com/vi/jt7AF2RCMhg/hqdefault.jpg'
   },
 ];
 
