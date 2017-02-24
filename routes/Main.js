@@ -18,12 +18,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/home', (req, res, next) => {
+  const currentUser = req.user;
   Item.find((err, items) => {
     if (err){
       return next(err);
     }
     return res.render('home', {layout: "layouts/home-layout",
-                        items });
+                        items, user: currentUser });
   });
 });
 
